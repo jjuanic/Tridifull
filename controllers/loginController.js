@@ -1,17 +1,19 @@
 
-const loginPage = (req,res) => {
+//importamos la conexion a la base de datos
+const connection = require('../models/config');
+
+const loginPage = (req, res) => {
     res.render('login')
 };
 
-const loginUser = (req,res) => {
+const loginUser = (req, res) => {
     user = req.body.user;
     password = req.body.password;
-    console.log('user','password');
-    res.redirect('/');
-};
+    console.log('user', 'password');
 
+    }
 
-module.exports = {
-    loginPage,
-    loginUser
-}
+    module.exports = {
+        loginPage,
+        loginUser
+    }
