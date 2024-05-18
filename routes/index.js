@@ -8,6 +8,6 @@ var router = express.Router();
 /* GET home page. */
 router.get('/',indexPage);
 // router.get('/logout', logoutUser);
-router.post('/', verificarToken, likeAlbum);
+router.post('/likeAlbum', verificarToken, likeAlbum);
 
 export default router

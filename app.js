@@ -3,7 +3,9 @@ import cors from 'cors';
 import logger from 'morgan';
 import path from 'node:path'; 
 import hbs from 'hbs';
-import cookieParser from 'cookie-parser'; // Asegúrate de importar cookie-parser
+import cookieParser from 'cookie-parser'; 
+import session from 'express-session';
+import jwt from 'jsonwebtoken';
 
 import indexRouter from './routes/index.js';
 import usersRouter from './routes/users.js';
@@ -11,6 +13,7 @@ import loginRouter from './routes/login.js';
 import navRouter from './routes/navRoutes.js'; 
 
 import { searchPopularAlbums } from './services/itunesApi.js';
+import { userLikedAlbums } from './services/albumService.js';
 
 const app = express();
 
@@ -32,6 +35,23 @@ app.use(async function(req, res, next) {
     const popularAlbums = await searchPopularAlbums();
     res.locals.popularAlbums = popularAlbums; // Haciendo que popularAlbums esté disponible en las vistas
     res.locals.title= 'Tridify';
+
+    const decodedToken = jwt.verify(req.cookies.token, process.env.SECRETORPRIVATEKEY);
+    const userId = decodedToken.user;
+    console.log('userId from Token: ', userId);
+
+    res.locals.userId = userId
+    res.locals.userLikedAlbumsIds = await userLikedAlbums(userId)
+    console.log(res.locals.userLikedAlbumsIds);
+
+    // Registra el helper dentro del middleware
+    hbs.registerHelper('isAlbumLikedByUser', function(albumId) {
+      const userLikedAlbumsIds = res.locals.userLikedAlbumsIds;
+      console.log('Likes de usuario en helper:', userLikedAlbumsIds);
+      return userLikedAlbumsIds.includes(albumId);
+    });
+
+
     next();
   } catch (error) {
     console.error('Error al cargar los álbumes populares:', error);
@@ -39,12 +59,10 @@ app.use(async function(req, res, next) {
   }
 });
 
-
-
-app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/login',loginRouter);
 app.use('/nav', navRouter);
+app.use('/', indexRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -76,4 +94,16 @@ hbs.registerHelper('changeImageUrl', function(url) {
   return url.replace("100x100bb", "1200x1200bb");
 });
 
+
+// Define el helper personalizado
+hbs.registerHelper('getAlbumById', function(array, index) {
+  // Verifica que el array y el índice estén definidos
+  if (array && index != null) {
+    // Retorna el elemento del array en el índice especificado
+    return array[index];
+  } else {
+    // Retorna un mensaje de error si el array o el índice no están definidos
+    return "Error: Array or index not defined";
+  }
+});
 export default app;
