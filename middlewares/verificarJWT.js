@@ -48,8 +48,6 @@ const secreto = process.env.SECRETORPRIVATEKEY;
 const verificarToken = (req = request, res = response, next) => {
     const token = req.cookies.token;
 
-    console.log('verificarToken');
-
     if (!token) {
         console.log('VerificarToken error');
         return res.redirect('/login');

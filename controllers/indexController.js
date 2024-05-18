@@ -10,6 +10,13 @@ const indexPage = async (req, res) => {
 const likeAlbum = async (req,res) =>{
     try {
         // Ver que hacer con lo de abajo, ojalá agregar notificaciones
+        const userId = req.user; // Aquí obtienes el ID del usuario desde el token
+        const albumId = req.body.albumId;
+
+        console.log(req.body)
+
+        console.log(userId,albumId);
+
         res.render('index', {notificacion:'Album Añadido con éxito'})
     } catch {
         res.render('index', {notificacion:'El álbum no pudo añadirse'})
