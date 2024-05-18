@@ -1,4 +1,5 @@
 import connection from "../models/config.js";
+import { searchPopularAlbums } from "./itunesApi.js";
 const con = connection.promise();
 
 const userLikedAlbums = async (userId) => {
@@ -71,19 +72,32 @@ const deleteAssociation = async (albumId, userId) => {
 };
 
 const insertAssociation = async (albumId, userId) => {
-    try {
-      await con.execute(
-        `INSERT INTO UserAlbum SET idAlbum = ?, idUser = ?`,
-        [albumId, userId]
-      );
-      console.log("Asociación creada con éxito");
-    } catch (error) {
-      console.error("Error al crear la asociación:", error);
-      throw error;
-    }
-  };
-  
-  
+  try {
+    await con.execute(
+      `INSERT INTO UserAlbum SET idAlbum = ?, idUser = ?`,
+      [albumId, userId]
+    );
+    console.log("Asociación creada con éxito");
+  } catch (error) {
+    console.error("Error al crear la asociación:", error);
+    throw error;
+  }
+};
+
+const searchPopularAlbumsWithLikes = async (userId) => {
+  try {
+    const popularAlbums = await searchPopularAlbums();
+    const userLikedAlbumsIds = await userLikedAlbums(userId);
+    const popularAlbumsWithLikes = popularAlbums.map(album => {
+      const isLikedByUser = userLikedAlbumsIds.includes(album.collectionId);
+      return { ...album, isLikedByUser };
+    });
+    return popularAlbumsWithLikes;
+  } catch (error) {
+    console.error('Error al cargar los álbumes populares con información de likes:', error);
+    throw error;
+  }
+};
 
 export {
   userLikedAlbums,
@@ -91,5 +105,6 @@ export {
   insertAlbum,
   checkAssociationExistence,
   deleteAssociation,
-  insertAssociation
+  insertAssociation,
+  searchPopularAlbumsWithLikes
 };

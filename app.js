@@ -13,7 +13,7 @@ import loginRouter from './routes/login.js';
 import navRouter from './routes/navRoutes.js'; 
 
 import { searchPopularAlbums } from './services/itunesApi.js';
-import { userLikedAlbums } from './services/albumService.js';
+import { userLikedAlbums, searchPopularAlbumsWithLikes } from './services/albumService.js';
 
 const app = express();
 
@@ -27,13 +27,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 app.use(express.static('public'));
+
 app.use(cookieParser()); 
 
 // Middleware para cargar los álbumes populares antes de renderizar la vista index
 app.use(async function(req, res, next) {
   try {
     const popularAlbums = await searchPopularAlbums();
-    res.locals.popularAlbums = popularAlbums; // Haciendo que popularAlbums esté disponible en las vistas
+    // res.locals.popularAlbums = popularAlbums; // Haciendo que popularAlbums esté disponible en las vistas
     res.locals.title= 'Tridify';
 
     const decodedToken = jwt.verify(req.cookies.token, process.env.SECRETORPRIVATEKEY);
@@ -41,17 +42,12 @@ app.use(async function(req, res, next) {
     console.log('userId from Token: ', userId);
 
     res.locals.userId = userId
-    res.locals.userLikedAlbumsIds = await userLikedAlbums(userId)
-    console.log(res.locals.userLikedAlbumsIds);
 
-    // Registra el helper dentro del middleware
-    hbs.registerHelper('isAlbumLikedByUser', function(albumId) {
-      const userLikedAlbumsIds = res.locals.userLikedAlbumsIds;
-      console.log('Likes de usuario en helper:', userLikedAlbumsIds);
-      return userLikedAlbumsIds.includes(albumId);
-    });
-
-
+    if(userId){
+      res.locals.popularAlbums = await searchPopularAlbumsWithLikes(userId);
+    } else {
+      res.locals.popularAlbums = popularAlbums;
+    }
     next();
   } catch (error) {
     console.error('Error al cargar los álbumes populares:', error);
