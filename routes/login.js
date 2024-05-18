@@ -21,11 +21,6 @@ router.post('/loginuser', [
 ]
 ,loginUser);
 
-// /* GET home page. */
-// router.get('/', loginPage);
-// router.post('/loginuser', 
-// loginUser);
-
 router.get('/signup',signUpPage);
 router.post('/signup', [
     check('user').isLength({min: 3}).withMessage('El nombre debe tener al menos 3 caracteres'),

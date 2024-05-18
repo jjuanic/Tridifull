@@ -1,9 +1,11 @@
 import express from 'express';
+import { indexPage,likeAlbum } from '../controllers/indexController.js';
+
+
 var router = express.Router();
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Tridifull' });
-});
+router.get('/',indexPage);
+router.post('/',likeAlbum);
 
-export default router;
+export default router
