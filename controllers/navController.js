@@ -1,5 +1,5 @@
 import { mapAlbumDataToViewModel } from "../models/AlbumViewModel.js";
-import { userLikedAlbumsDTO } from "../services/albumService.js";
+import { userLikedAlbumsDTO, searchAlbumsWithLikes } from "../services/albumService.js";
 import { searchAlbums } from "../services/itunesApi.js";
 
 
@@ -23,9 +23,13 @@ const searchPage = async (req, res) => {
         res.locals.search = searchForm;
     }
 
-    const albums = await searchAlbums(res.locals.search)
-
-//   console.log(albums);
+    const userId = res.locals.userId;
+    var albums = '';
+    if(res) {
+        albums = await searchAlbumsWithLikes(userId,res.locals.search)
+    } else {
+        albums = await searchAlbums(res.locals.search)
+    }
 
     res.render('search', {popularAlbums: albums, searchInput: res.locals.search});
 };

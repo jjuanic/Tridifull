@@ -1,5 +1,5 @@
 import connection from "../models/config.js";
-import { searchPopularAlbums } from "./itunesApi.js";
+import { searchAlbums, searchPopularAlbums } from "./itunesApi.js";
 const con = connection.promise();
 
 const userLikedAlbums = async (userId) => {
@@ -117,6 +117,22 @@ const searchPopularAlbumsWithLikes = async (userId) => {
   }
 };
 
+const searchAlbumsWithLikes = async (userId,search) => {
+  try {
+    const albumSearchResult = await searchAlbums(search);
+    const userLikedAlbumsIds = await userLikedAlbums(userId);
+
+    const albumsWithLikes = albumSearchResult.map(album => {
+      const isLikedByUser = userLikedAlbumsIds.includes(album.collectionId);
+      return { ...album, isLikedByUser };
+    });
+    return albumsWithLikes;
+  } catch (error) {
+    console.error('Error al cargar los álbumes populares con información de likes:', error);
+    throw error;
+  }
+};
+
 export {
   userLikedAlbums,
   albumExists,
@@ -125,5 +141,6 @@ export {
   deleteAssociation,
   insertAssociation,
   searchPopularAlbumsWithLikes,
-  userLikedAlbumsDTO
+  userLikedAlbumsDTO,
+  searchAlbumsWithLikes
 };
