@@ -18,6 +18,24 @@ const userLikedAlbums = async (userId) => {
   }
 };
 
+const userLikedAlbumsDTO = async (userId) => {
+  try {
+    const [rows] = await con.execute(
+      `SELECT * FROM album A
+      join useralbum US
+      on US.idUser = ? and US.idAlbum = A.idAlbum`,
+      [userId]
+    );
+    return rows;
+  } catch (error) {
+    console.error(
+      "Error al obtener los álbumes que le gustan al usuario:",
+      error
+    );
+    throw error;
+  }
+};
+
 const albumExists = async (albumId) => {
   const [result] = await con.execute("SELECT * FROM Album WHERE idAlbum = ?", [
     albumId,
@@ -106,5 +124,6 @@ export {
   checkAssociationExistence,
   deleteAssociation,
   insertAssociation,
-  searchPopularAlbumsWithLikes
+  searchPopularAlbumsWithLikes,
+  userLikedAlbumsDTO
 };

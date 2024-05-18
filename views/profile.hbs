@@ -5,10 +5,10 @@
 <h1>{{notificacion}}</h1>
 {{/if}}
 
-{{#if popularAlbums}}
-    <h2>Popular Albums</h2>
+{{#if albums}}
+    <h2>Your favorite albums: </h2>
     <div class="row">
-                {{#each popularAlbums}}
+            {{#each albums}}
             <div class="col-md-2 mb-4 pr-md-4">
                 <div class="card h-100">
                     <div class="card-body d-flex flex-column justify-content-between">
@@ -26,12 +26,8 @@
                             <input type="hidden" name="artistName" value="{{this.artistName}}">
                             <input type="hidden" name="collectionPrice" value="{{this.collectionPrice}}">
                             <input type="hidden" name="primaryGenreName" value="{{this.primaryGenreName}}">
-                            <input type="hidden" name="fromProfile" value="false">
-                            {{#if isLikedByUser}}
-                                <button type="submit" class="btn btn-danger"><i class="fas fa-heart"></i> Quitar me gusta</button>
-                            {{else}}
-                                <button type="submit" class="btn btn-primary"><i class="fas fa-heart"></i> Me gusta</button>
-                            {{/if}}
+                            <input type="hidden" name="fromProfile" value="true">
+                            <button type="submit" class="btn btn-danger"><i class="fas fa-heart"></i> Quitar me gusta</button>
                         </form>
                     </div>
                 </div>
@@ -39,9 +35,5 @@
         {{/each}}
     </div>
 {{else}}
-    <p>No popular albums found</p>
+    <p>You dont have any favorite album, try adding someones!</p>
 {{/if}}
-
-
-
-

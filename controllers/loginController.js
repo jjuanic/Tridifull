@@ -1,12 +1,14 @@
 import { validationResult } from "express-validator";
-import connection from '../models/config.js';
+
+// import connection from '../models/config.js';
+// const con = connection.promise();
+
 import bcrypt from "bcrypt";
 import generarJWT from '../middlewares/generarJWT.js';
 import dotenv from 'dotenv';
 import { selectUser } from "../services/userService.js";
 dotenv.config();
 
-const con = connection.promise();
 
 const loginPage = (req, res) => {
     res.render('login', {title:'Login'})

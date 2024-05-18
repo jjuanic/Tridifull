@@ -63,8 +63,14 @@ const likeAlbum = async (req, res) => {
       await insertAssociation(albumId, userId);
     }
 
+    const fromProfile = req.body.fromProfile
+
     // Enviamos la respuesta al cliente
-    res.redirect("/");
+    if (fromProfile == "true"){
+      console.log('desde perfil');
+      res.redirect('/nav/profile')
+    } else {
+    res.redirect("/")};
   } catch (err) {
     console.log(err);
     res.redirect("/");
