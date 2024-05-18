@@ -15,7 +15,16 @@ import {
 
 /* GET home page. */
 router.get('/', loginPage);
-router.post('/loginuser', loginUser);
+router.post('/loginuser', [
+    check('user').isLength(3).withMessage('El usuario no es válido'),
+    check('password').isLength({min: 8}).withMessage('La contraseña debe tener al menos 8 caracteres')
+]
+,loginUser);
+
+// /* GET home page. */
+// router.get('/', loginPage);
+// router.post('/loginuser', 
+// loginUser);
 
 router.get('/signup',signUpPage);
 router.post('/signup', [
