@@ -64,13 +64,20 @@ const likeAlbum = async (req, res) => {
     }
 
     const fromProfile = req.body.fromProfile
+    const fromSearch = req.body.fromSearch
 
     // Enviamos la respuesta al cliente
     if (fromProfile == "true"){
       console.log('desde perfil');
       res.redirect('/nav/profile')
     } else {
-    res.redirect("/")};
+      if (fromSearch == "true"){
+        console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa from search');
+        res.redirect('nav/search')
+      }else {
+        res.redirect("/")};
+      }
+
   } catch (err) {
     console.log(err);
     res.redirect("/");
