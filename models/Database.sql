@@ -10,10 +10,13 @@ idUser int not null AUTO_INCREMENT primary key,
  creationDate Date not null
 );
 
-create table Album (
-idAlbum int AUTO_INCREMENT not null primary key,
-name varchar(50) not null,
-artist varchar(50) not null
+CREATE TABLE Album (
+    idAlbum int not null PRIMARY KEY,
+    collectionName VARCHAR(255),
+    artworkUrl100 VARCHAR(255),
+    artistName VARCHAR(255),
+    collectionPrice DECIMAL(10, 2),
+    primaryGenreName VARCHAR(255)
 );
 
 create table UserAlbum(
