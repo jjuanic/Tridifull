@@ -4,8 +4,10 @@ use tridifull;
 
 create table User (
 idUser int not null AUTO_INCREMENT primary key,
- username varchar(50) not null,
- password varchar(50) not null
+ username varchar(255) not null,
+ password varchar(60) not null,
+ email varchar(255) not null,
+ creationDate Date not null
 );
 
 create table Album (

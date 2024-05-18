@@ -1,36 +1,25 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-const hbs = require('hbs');
-const cors = require('cors');
-const session = require('express-session');
+import express from 'express';
+import cors from 'cors';
+import logger from 'morgan';
+import path from 'node:path'; 
+import hbs from 'hbs';
 
+import indexRouter  from './routes/index.js';
+import usersRouter  from './routes/users.js';
+import loginRouter  from './routes/login.js';
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-var loginRouter = require('./routes/login');
-
-var app = express();
-
-app.use(session({
-  secret: 'beto123',
-  resave: false,
-  saveUninitialized: false
-}));
+const app = express();
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
+app.set('views', 'views');
 app.set('view engine', 'hbs');
-hbs.registerPartials(path.join(__dirname, 'views/partials'));
+hbs.registerPartials('views/partials');
 
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
 app.use(cors());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static('public'));
 
 
 app.use('/', indexRouter);
@@ -53,4 +42,4 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-module.exports = app;
+export default app;

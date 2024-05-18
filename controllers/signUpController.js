@@ -1,49 +1,54 @@
+import { validationResult } from "express-validator";
+import connection from '../models/config.js';
+import bcrypt from "bcrypt";
 
-//importamos la conexion a la base de datos
-const connection = require('../models/config');
-const Swal = require('sweetalert2')
-
-// Middleware para mostrar mensajes de alerta
-const showAlert = (req, res, next) => {
-    res.locals.alert = req.session.alert;
-    delete req.session.alert;
-    next();
-};
-
+const con = connection.promise();
 
 const signUpPage = (req, res) => {
-    res.render('signup', {user:false});
+    res.render('signup', {user: false, title: 'Sign Up'});
 };
 
-const signUpUser = (req, res) => {
-    const user = req.body.user;
-    const password = req.body.password;
-
-    console.log(user, password);
-
-    const sqlQuery = `INSERT INTO User SET ?`;
-    const datoSql = {
-        username: user,
-        password: password,
-    };
-
-    // Execute query to insert user data
-    connection.query(sqlQuery, datoSql, (err, result) => {
-        if (err) {
-            console.log('Error al insertar los datos');
-            console.log(err);
-            res.send('Error al insertar los datos');
-        } else {
-            console.log('Datos insertados correctamente');
-            
-            res.render('login',{user:true});
-            
+const signUpUser = async (req, res) => {
+    try {
+        const controlError = validationResult(req);
+        if (!controlError.isEmpty()) {
+            console.log('Error de datos mal ingresados');
+            return res.render('signup', {
+                errores: 'Error en los datos ingresados'
+            });
         }
-    });
+
+        const user = req.body.user;
+        const password = req.body.password;
+        const email = req.body.email;
+        const creationDate = new Date();
+
+        const [rows] = await con.execute('SELECT COUNT(*) AS count FROM User WHERE email = ? OR username = ?', [email, user]);
+        const count = rows[0].count;
+
+        if (count > 0) {
+            console.log('Usuario ya registrado');
+            return res.render('signup', {
+                errores: 'El usuario ya está registrado'
+            });
+        }
+
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password, salt);
+
+        const [result] = await con.execute('INSERT INTO User SET username = ?, password = ?, email = ?, creationDate = ?', [user, hashedPassword, email, creationDate]);
+
+        console.log('Datos insertados correctamente');
+        return res.render('login', { user: true });
+    } catch (error) {
+        console.error('Error al insertar los datos:', error);
+        return res.render('signup', {
+            errores: 'Error al insertar los datos'
+        });
+    }
 };
 
-module.exports = {
-    showAlert,
+export {
     signUpPage,
     signUpUser
-}
+};

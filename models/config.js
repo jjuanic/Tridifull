@@ -1,6 +1,5 @@
-
-const mysql = require('mysql2');
-const dotenv = require('dotenv');
+import mysql from 'mysql2';
+import dotenv from 'dotenv';
 dotenv.config();
 
 const PORTSQL = process.env.PORTSQL;
@@ -23,5 +22,4 @@ connection.connect((err) => {
     console.log(`Conexión exitosa a la base de datos: ${DATASQL}`);
 });
 
-
-module.exports = connection;
+export default connection;

@@ -1,6 +1,6 @@
 
 //importamos la conexion a la base de datos
-const connection = require('../models/config');
+import connection from '../models/config.js';
 
 const loginPage = (req, res) => {
     res.render('login')
@@ -13,7 +13,7 @@ const loginUser = (req, res) => {
 
     }
 
-    module.exports = {
-        loginPage,
-        loginUser
-    }
+export {
+    loginPage,
+    loginUser
+}

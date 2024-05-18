@@ -1,22 +1,28 @@
-var express = require('express');
-var router = express.Router();
+import { Router } from 'express';
+import { check } from 'express-validator';
 
-const {
+const router = Router();
+
+import {
     loginPage,
     loginUser,
-} = require('../controllers/loginController')
+} from '../controllers/loginController.js'
 
-const {
+import {
     signUpPage,
     signUpUser
-} = require('../controllers/signUpController')
+} from '../controllers/signUpController.js'
 
 /* GET home page. */
 router.get('/', loginPage);
 router.post('/loginuser', loginUser);
 
 router.get('/signup',signUpPage);
-router.post('/signup',signUpUser)
+router.post('/signup', [
+    check('user').isLength({min: 3}).withMessage('El nombre debe tener al menos 3 caracteres'),
+    check('email').isEmail().withMessage('El email no es válido'),
+    check('password').isLength({min: 8}).withMessage('La contraseña debe tener al menos 8 caracteres')
+], signUpUser);
 
 
-module.exports = router;
+export default router;
