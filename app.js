@@ -21,7 +21,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 app.use(express.static('public'));
 
-
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/login',loginRouter);
@@ -41,5 +40,11 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+// Middlewares para los nombres de las páginas
+
+
+
+
 
 export default app;

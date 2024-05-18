@@ -39,7 +39,7 @@ const signUpUser = async (req, res) => {
         const [result] = await con.execute('INSERT INTO User SET username = ?, password = ?, email = ?, creationDate = ?', [user, hashedPassword, email, creationDate]);
 
         console.log('Datos insertados correctamente');
-        return res.render('login', { user: true });
+        return res.render('login', { user: true, title:'Login' });
     } catch (error) {
         console.error('Error al insertar los datos:', error);
         return res.render('signup', {

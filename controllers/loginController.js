@@ -3,7 +3,7 @@
 import connection from '../models/config.js';
 
 const loginPage = (req, res) => {
-    res.render('login')
+    res.render('login', {title:'Login'})
 };
 
 const loginUser = (req, res) => {
