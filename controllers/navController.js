@@ -50,9 +50,20 @@ const profilePage = async (req, res) => {
     res.render('profile', {title:'Profile', albums: mappedAlbums})
 };
 
+const faqPages = (req, res) => {
+    res.render('faq');
+};
+
+const historyPage = (req, res) => {
+    res.render('history');
+};
+
+
 
 export {
     logoutUser,
     profilePage,
-    searchPage
+    searchPage,
+    faqPages,
+    historyPage
 };
