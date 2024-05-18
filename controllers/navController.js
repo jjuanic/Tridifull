@@ -9,14 +9,25 @@ const logoutUser = (req, res) => {
 };
 
 const searchPage = async (req, res) => {
-    const search = req.body.searchInput
-    console.log(search);
+    const searchForm = req.body.searchInput 
 
-    const albums = await searchAlbums(search)
+    if (!searchForm || searchForm.trim() === ''){
+        res.locals.search = req.cookies.search || '';
+    } else {
+        // creo una cookie donde guardar la búsqueda, así puedo acceder siempre a la misma y recargar la página realizando la misma búsqueda
+        res.cookie('search', searchForm, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production', 
+            maxAge: 3600000*4 
+        });
+        res.locals.search = searchForm;
+    }
+
+    const albums = await searchAlbums(res.locals.search)
 
 //   console.log(albums);
 
-    res.render('search', {popularAlbums: albums});
+    res.render('search', {popularAlbums: albums, searchInput: res.locals.search});
 };
 
 const profilePage = async (req, res) => {

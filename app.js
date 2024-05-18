@@ -37,6 +37,8 @@ app.use(async function(req, res, next) {
     // res.locals.popularAlbums = popularAlbums; // Haciendo que popularAlbums esté disponible en las vistas
     res.locals.title= 'Tridify';
 
+    res.locals.search = req.cookies.search || '';
+
     if (req.cookies.token){
       const decodedToken = jwt.verify(req.cookies.token, process.env.SECRETORPRIVATEKEY);
       const userId = decodedToken.user;
