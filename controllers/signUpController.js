@@ -3,6 +3,7 @@ import connection from '../models/config.js';
 import bcrypt from "bcrypt";
 import generarJWT from '../middlewares/generarJWT.js';
 import UserDTO from '../models/UserDTO.js'
+import { checkIfUserExists, insertUser } from "../services/userService.js";
 
 const con = connection.promise();
 
@@ -10,11 +11,17 @@ const signUpPage = (req, res) => {
     res.render('signup', {user: false, title: 'Sign Up'});
 };
 
-// Otros imports y código
-
 const signUpUser = async (req, res) => {
     try {
-        // Validación y otros códigos
+        // Validación 
+        const controlError = validationResult(req);
+
+        if (!controlError.isEmpty()) {
+            const listaErrores = controlError.errors.map(error => error.msg).join(' and ');
+            return res.render('signup', {
+                errores: listaErrores
+            });
+        }
 
         // Encriptar la contraseña
         const salt = await bcrypt.genSalt(10);
@@ -26,29 +33,29 @@ const signUpUser = async (req, res) => {
         console.log(userDTO);
 
         // Consulta SQL para verificar si el usuario ya existe
-        const [rows] = await con.execute('SELECT COUNT(*) AS count FROM User WHERE email = ? OR username = ?', [userDTO.email, userDTO.username]);
-        const count = rows[0].count;
+        const userExists = await checkIfUserExists(userDTO);
 
         // Validar si el usuario ya está registrado
-        if (count > 0) {
-            console.log('Usuario ya registrado');
+        if (userExists) {
+            console.log('The user already exists');
             return res.render('signup', {
-                errores: 'El usuario ya está registrado'
+                errores: 'The user already exists'
             });
         }
 
         // Insertar el nuevo usuario en la base de datos
-        const [result] = await con.execute('INSERT INTO User SET username = ?, password = ?, email = ?, creationDate = ?', [userDTO.username, userDTO.password, userDTO.email, userDTO.creationDate]);
+        await insertUser(userDTO);
 
-        console.log('Datos insertados correctamente');
-        return res.render('login', { user: true, title:'Login' });
+        console.log('The account was created successfully');
+        return res.render('login', { user: true, title: 'Login' });
     } catch (error) {
         console.error('Error al insertar los datos:', error);
         return res.render('signup', {
-            errores: 'Error al insertar los datos'
+            errores: 'There was an error in the inputs'
         });
     }
 };
+
 
 
 export {

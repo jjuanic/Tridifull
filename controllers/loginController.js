@@ -3,6 +3,7 @@ import connection from '../models/config.js';
 import bcrypt from "bcrypt";
 import generarJWT from '../middlewares/generarJWT.js';
 import dotenv from 'dotenv';
+import { selectUser } from "../services/userService.js";
 dotenv.config();
 
 const con = connection.promise();
@@ -18,32 +19,32 @@ const loginUser = async (req, res) => {
     const user = req.body.user;
     const password = req.body.password;
 
-    const [result] = await con.execute('SELECT * FROM User WHERE username = ?', [user]);
-
     if (!controlError.isEmpty()) {
         console.log('Error de datos mal ingresados');
         return res.render('login', {
-            errores: 'Error en los datos ingresados'
+            errores: 'There was an error in the inputs'
         });
     }
 
-    const count = result.length;
+    const userSQL = await selectUser(user);
+
+    const count = userSQL.length;
 
     if (count == 0) {
         console.log('Usuario no está registrado');
         return res.render('login', {
-            errores: 'El usuario no está registrado, registresé por favor'
+            errores: 'This username is not registered. Please sign up'
         });
     } else {
         //USUARIO REGISTRADO
-        const userPassword = result[0].password;
-        const userId = result[0].idUser;
+        const userPassword = userSQL[0].password;
+        const userId = userSQL[0].idUser;
 
         const match = await bcrypt.compare(password, userPassword); 
 
         if(!match){
             return res.render('login', {
-                errores: 'Password y/o usuario incorrecto'
+                errores: 'The username or password entered is not valid'
             });
         } else {
 
@@ -62,7 +63,6 @@ const loginUser = async (req, res) => {
         }
 
     }
-
 
     } catch {
         console.log('Login Controller falló');
