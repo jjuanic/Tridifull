@@ -11,9 +11,9 @@ const likeAlbum = async (req,res) =>{
     try {
         // Ver que hacer con lo de abajo, ojalá agregar notificaciones
         const userId = req.user; // Aquí obtienes el ID del usuario desde el token
-        const albumId = req.body.albumId;
+        const { albumId, collectionName, artworkUrl100, artistName, collectionPrice, primaryGenreName } = req.body;
 
-        console.log(req.body)
+        
 
         console.log(userId,albumId);
 

@@ -2,6 +2,7 @@ import { validationResult } from "express-validator";
 import connection from '../models/config.js';
 import bcrypt from "bcrypt";
 import generarJWT from '../middlewares/generarJWT.js';
+import UserDTO from '../models/UserDTO.js'
 
 const con = connection.promise();
 
@@ -9,24 +10,26 @@ const signUpPage = (req, res) => {
     res.render('signup', {user: false, title: 'Sign Up'});
 };
 
+// Otros imports y código
+
 const signUpUser = async (req, res) => {
     try {
-        const controlError = validationResult(req);
-        if (!controlError.isEmpty()) {
-            console.log('Error de datos mal ingresados');
-            return res.render('signup', {
-                errores: 'Error en los datos ingresados'
-            });
-        }
+        // Validación y otros códigos
 
-        const user = req.body.user;
-        const password = req.body.password;
-        const email = req.body.email;
+        // Encriptar la contraseña
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(req.body.password, salt);
+
+        // Crear un nuevo objeto UsuarioDTO con la contraseña encriptada
         const creationDate = new Date();
+        const userDTO = new UserDTO(req.body.user, req.body.email, hashedPassword, creationDate);
+        console.log(userDTO);
 
-        const [rows] = await con.execute('SELECT COUNT(*) AS count FROM User WHERE email = ? OR username = ?', [email, user]);
+        // Consulta SQL para verificar si el usuario ya existe
+        const [rows] = await con.execute('SELECT COUNT(*) AS count FROM User WHERE email = ? OR username = ?', [userDTO.email, userDTO.username]);
         const count = rows[0].count;
 
+        // Validar si el usuario ya está registrado
         if (count > 0) {
             console.log('Usuario ya registrado');
             return res.render('signup', {
@@ -34,18 +37,8 @@ const signUpUser = async (req, res) => {
             });
         }
 
-        const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(password, salt);
-
-        const [result] = await con.execute('INSERT INTO User SET username = ?, password = ?, email = ?, creationDate = ?', [user, hashedPassword, email, creationDate]);
-
-        // Obtenemos el id del usuario para utilizarlo en el token
-        // const userId = result.insertId;
-
-        // const token = await generarJWT(userId);
-        // console.log(`5. ${token}`);
-        // res.header('x-auth-token', token);
-        // localStorage.setItem('token', token); 
+        // Insertar el nuevo usuario en la base de datos
+        const [result] = await con.execute('INSERT INTO User SET username = ?, password = ?, email = ?, creationDate = ?', [userDTO.username, userDTO.password, userDTO.email, userDTO.creationDate]);
 
         console.log('Datos insertados correctamente');
         return res.render('login', { user: true, title:'Login' });
@@ -56,6 +49,7 @@ const signUpUser = async (req, res) => {
         });
     }
 };
+
 
 export {
     signUpPage,

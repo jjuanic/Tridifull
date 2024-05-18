@@ -20,12 +20,12 @@
                             <p class="card-text">Price: {{collectionPrice}}</p>
                         </div>
                         <form action="/" method="post">
-                            <input type="hidden" name="albumId" value="{{../collectionId}}">
-                            <input type="hidden" name="collectionName" value="{{../collectionName}}">
-                            <input type="hidden" name="artworkUrl1000" value="{{../artworkUrl100}}">
-                            <input type="hidden" name="artistName" value="{{../artistName}}">
-                            <input type="hidden" name="collectionPrice" value="{{../collectionPrice}}">
-                            <input type="hidden" name="primaryGenreName" value="{{../primaryGenreName}}">
+                            <input type="hidden" name="albumId" value="{{this.collectionId}}">
+                            <input type="hidden" name="collectionName" value="{{this.collectionName}}">
+                            <input type="hidden" name="artworkUrl100" value="{{this.artworkUrl100}}">
+                            <input type="hidden" name="artistName" value="{{this.artistName}}">
+                            <input type="hidden" name="collectionPrice" value="{{this.collectionPrice}}">
+                            <input type="hidden" name="primaryGenreName" value="{{this.primaryGenreName}}">
                             <button type="submit" class="btn btn-primary"><i class="fas fa-heart"></i> Me gusta</button>
                         </form>
                     </div>
