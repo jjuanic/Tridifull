@@ -1,6 +1,7 @@
 import { validationResult } from "express-validator";
 import connection from '../models/config.js';
 import bcrypt from "bcrypt";
+import generarJWT from '../middlewares/generarJWT.js';
 
 const con = connection.promise();
 
@@ -37,6 +38,13 @@ const signUpUser = async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, salt);
 
         const [result] = await con.execute('INSERT INTO User SET username = ?, password = ?, email = ?, creationDate = ?', [user, hashedPassword, email, creationDate]);
+
+        // Obtenemos el id del usuario para utilizarlo en el token
+        const userId = result.insertId;
+
+        const token = await generarJWT(userId);
+        console.log(`5. ${token}`);
+        res.header('x-auth-token', token);
 
         console.log('Datos insertados correctamente');
         return res.render('login', { user: true, title:'Login' });
