@@ -9,6 +9,6 @@ const PORT = process.env.PORT || 3000;
 //conexión a la base de datos
 import connection from './models/config.js';
 
-const server = app.listen(PORT, () =>{
+app.listen(PORT, () =>{
     console.log(`Server listening en new file 'Server' on http://localhost:${PORT}`);
 });

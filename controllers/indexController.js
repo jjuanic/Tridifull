@@ -1,4 +1,4 @@
-import AlbumDTO from "../models/albumDTO.js";
+import AlbumDTO from "../models/AlbumDTO.js";
 import connection from "../models/config.js";
 import {
   albumExists,
