@@ -5,12 +5,20 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const hbs = require('hbs');
 const cors = require('cors');
+const session = require('express-session');
+
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var loginRouter = require('./routes/login');
 
 var app = express();
+
+app.use(session({
+  secret: 'beto123',
+  resave: false,
+  saveUninitialized: false
+}));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -23,6 +31,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(cors());
 app.use(express.static(path.join(__dirname, 'public')));
+
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);

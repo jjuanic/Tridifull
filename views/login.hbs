@@ -1,8 +1,11 @@
+{{#if user}}
+        <h1>Muchas gracias por registrarse, puede iniciar sesión</h1>
+    {{/if}}
 <h1>Login Page</h1>
 <form action="/login/loginuser" method="post">
     <div class="mb-3">
         <label for="user" class="form-label">Username</label>
-        <input id="user" name="user" type="text" class="form-control" placeholder="epicUser123" required>
+        <input id="user" name="user" type="text" class="form-control" placeholder="betoUser123" required>
     </div>
     <div class="mb-3">
         <label for="password" class="form-label">Password</label>
