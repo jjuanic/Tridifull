@@ -37,17 +37,21 @@ app.use(async function(req, res, next) {
     // res.locals.popularAlbums = popularAlbums; // Haciendo que popularAlbums esté disponible en las vistas
     res.locals.title= 'Tridify';
 
-    const decodedToken = jwt.verify(req.cookies.token, process.env.SECRETORPRIVATEKEY);
-    const userId = decodedToken.user;
-    console.log('userId from Token: ', userId);
-
-    res.locals.userId = userId
-
-    if(userId){
+    if (req.cookies.token){
+      const decodedToken = jwt.verify(req.cookies.token, process.env.SECRETORPRIVATEKEY);
+      const userId = decodedToken.user;
+      console.log('userId from Token: ', userId);
+      res.locals.userId = userId
       res.locals.popularAlbums = await searchPopularAlbumsWithLikes(userId);
     } else {
       res.locals.popularAlbums = popularAlbums;
     }
+
+    // if(userId){
+    //   res.locals.popularAlbums = await searchPopularAlbumsWithLikes(userId);
+    // } else {
+    //   res.locals.popularAlbums = popularAlbums;
+    // }
     next();
   } catch (error) {
     console.error('Error al cargar los álbumes populares:', error);
