@@ -5,26 +5,31 @@
 <h1>{{notificacion}}</h1>
 {{/if}}
 
-{{#if token}}
+{{!-- {{#if token}}
 <h1>Usuario con token: {{token}}</h1>
 {{else}}
 <h1>Usuario sin token</h1>
-{{/if}}
+{{/if}} --}}
 
-{{#if popularAlbums}}
-<h2>Popular Albums</h2>
-<div class="row">
-    {{#each popularAlbums}}
-    <div class="col-md-2 mb-4 pr-md-4">
-        <div class="card h-100">
-            <div class="card-body d-flex flex-column justify-content-between">
-                <img src="{{changeImageUrl this.artworkUrl100}}" alt="Album Art" class="card-img-top">
-                <div>
-                    <h5 class="card-title">{{truncateText this.collectionName 30}}</h5>
-                    <p class="card-text">{{truncateText this.artistName 30}}</p>
-                    <p class="card-text">Genre: {{this.primaryGenreName}}</p>
-                    <p class="card-text">Price: {{this.collectionPrice}}</p>
-                </div>
+{{!-- </div>
+<form action="/logout" method="get">
+    <button type="submit" class="btn btn-primary"></i>LogOut</button>
+</div> --}}
+
+    {{#if popularAlbums}}
+    <h2>Popular Albums</h2>
+    <div class="row">
+        {{#each popularAlbums}}
+        <div class="col-md-2 mb-4 pr-md-4">
+            <div class="card h-100">
+                <div class="card-body d-flex flex-column justify-content-between">
+                    <img src="{{changeImageUrl this.artworkUrl100}}" alt="Album Art" class="card-img-top">
+                    <div>
+                        <h5 class="card-title">{{truncateText this.collectionName 30}}</h5>
+                        <p class="card-text">{{truncateText this.artistName 30}}</p>
+                        <p class="card-text">Genre: {{this.primaryGenreName}}</p>
+                        <p class="card-text">Price: {{this.collectionPrice}}</p>
+                    </div>
                     <form action="/" method="post">
                         <input type="hidden" name="albumId" value="{{this.albumId}}">
                         <input type="hidden" name="collectionName" value="{{truncateText this.collectionName 30}}">

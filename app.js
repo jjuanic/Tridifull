@@ -3,10 +3,12 @@ import cors from 'cors';
 import logger from 'morgan';
 import path from 'node:path'; 
 import hbs from 'hbs';
+import cookieParser from 'cookie-parser'; // Asegúrate de importar cookie-parser
 
 import indexRouter from './routes/index.js';
 import usersRouter from './routes/users.js';
 import loginRouter from './routes/login.js';
+import navRouter from './routes/navRoutes.js'; 
 
 import { searchPopularAlbums } from './services/itunesApi.js';
 
@@ -22,6 +24,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 app.use(express.static('public'));
+app.use(cookieParser()); 
 
 // Middleware para cargar los álbumes populares antes de renderizar la vista index
 app.use(async function(req, res, next) {
@@ -41,6 +44,7 @@ app.use(async function(req, res, next) {
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/login',loginRouter);
+app.use('/nav', navRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -71,8 +75,5 @@ hbs.registerHelper('truncateText', function(text, length) {
 hbs.registerHelper('changeImageUrl', function(url) {
   return url.replace("100x100bb", "1200x1200bb");
 });
-
-
-
 
 export default app;

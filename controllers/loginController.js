@@ -2,6 +2,8 @@ import { validationResult } from "express-validator";
 import connection from '../models/config.js';
 import bcrypt from "bcrypt";
 import generarJWT from '../middlewares/generarJWT.js';
+import dotenv from 'dotenv';
+dotenv.config();
 
 const con = connection.promise();
 
@@ -47,18 +49,23 @@ const loginUser = async (req, res) => {
 
             const token = await generarJWT(userId);
 
-            console.log(token);
-            
-            res.render('index', {
-                token: token
+            console.log('token: ',token);
+
+            res.cookie('token', token, {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production', // Asegurarse de usar 'secure' en producción
+                maxAge: 3600000*4 // 4 hora
             });
+
+
+            res.redirect('/')
         }
 
     }
 
 
     } catch {
-        console.log('aaaa');
+        console.log('Login Controller falló');
         return res.render('login', {
             errores: 'Error en los datos ingresados'
         })

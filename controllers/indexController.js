@@ -16,8 +16,14 @@ const likeAlbum = async (req,res) =>{
     }
 }
 
+// const logoutUser = (req, res) => {
+//     res.clearCookie('token');
+//     res.redirect('/login');
+// };
+
 export {
     indexPage,
     likeAlbum
+    // logoutUser
 };
 
