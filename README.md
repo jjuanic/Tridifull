@@ -1,10 +1,14 @@
-###Tridifull 
+### Tridifull 
+
 App para un Proyecto Final del Curso Fullstack de Franja Morada.
 
 El mismo es una página web donde podemos registrarnos y elegir nuestros álbumes favoritos para llevar una lista de los mismos.
 En un futuro, esta aplicación podría expandirse y permitir escribir reviews de albumes, para que sean visibles por todo el mundo, ademas, también podría compartirse el perfil con tus amigos para que vean tu lista de favoritos
 
-### Instalación Local
+## Deploy en Railway
+https://tridifull-production.up.railway.app/
+
+## Instalación Local
 -Realizamos un git clone del repositorio en el directorio que desee
 -Realizamos npm install para instalar las dependencias del proyecto
 -Creamos un archivo .env en el root del proyecto, donde tendremos las siguientes variables de entorno
@@ -21,7 +25,7 @@ SECRETORPRIVATEKEY= 'secretkey123' // Acá va un string aleatorio que se utilia 
 NODE_ENV = 'production' // Acá va 'production' para el manejo de cookies.
 ```
 
-### Ejecución del código de MySQL
+## Ejecución del código de MySQL
 Necesitamos crear la base de datos, para ello, deben ir a models/Database.sql, ahí tenemos el código de creación para nuestra base de datos, que está compuesta por 3 tablas.
 
 ```
