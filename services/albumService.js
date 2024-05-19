@@ -21,8 +21,8 @@ const userLikedAlbums = async (userId) => {
 const userLikedAlbumsDTO = async (userId) => {
   try {
     const [rows] = await con.execute(
-      `SELECT * FROM album A
-      join useralbum US
+      `SELECT * FROM Album A
+      join UserAlbum US
       on US.idUser = ? and US.idAlbum = A.idAlbum`,
       [userId]
     );
