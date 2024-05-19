@@ -1,6 +1,6 @@
 import { validationResult } from "express-validator";
 import connection from '../models/config.js';
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import generarJWT from '../middlewares/generarJWT.js';
 import UserDTO from '../models/UserDTO.js'
 import { checkIfUserExists, insertUser } from "../services/userService.js";
