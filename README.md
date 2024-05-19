@@ -21,7 +21,7 @@ USERSQL= // Acá va el usuario de nuestro servidor de MySQL
 PASSWORDSQL= // Acá va la contraseña de nuestro servidor de MySQL
 HOSTSQL= // Acá va el HOST de nuestro servidor de MySQL
 DATASQL= tridifull // Acá va el nombre de nuestra base de datos, en este caso, Tridifull
-SECRETORPRIVATEKEY= 'secretkey123' // Acá va un string aleatorio que se utilia para la encriptación de contraseñas.  
+SECRETORPRIVATEKEY= 'secretkey123' // Acá va un string aleatorio que se utiliza para la encriptación de contraseñas.  
 NODE_ENV = 'production' // Acá va 'production' para el manejo de cookies.
 ```
 
