@@ -25,7 +25,7 @@ const searchPage = async (req, res) => {
 
     const userId = res.locals.userId;
     var albums = '';
-    if(res) {
+    if(userId) {
         albums = await searchAlbumsWithLikes(userId,res.locals.search)
     } else {
         albums = await searchAlbums(res.locals.search)

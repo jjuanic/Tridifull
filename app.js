@@ -33,7 +33,7 @@ app.use(cookieParser());
 // Middleware para cargar los álbumes populares antes de renderizar la vista index
 app.use(async function(req, res, next) {
   try {
-    const popularAlbums = await searchPopularAlbums();
+    //const popularAlbums = await searchPopularAlbums();
     // res.locals.popularAlbums = popularAlbums; // Haciendo que popularAlbums esté disponible en las vistas
     res.locals.title= 'Tridify';
 
@@ -46,7 +46,7 @@ app.use(async function(req, res, next) {
       res.locals.userId = userId
       res.locals.popularAlbums = await searchPopularAlbumsWithLikes(userId);
     } else {
-      res.locals.popularAlbums = popularAlbums;
+      res.locals.popularAlbums = await searchPopularAlbums();
     }
 
     // if(userId){
