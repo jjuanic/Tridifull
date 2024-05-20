@@ -3,7 +3,7 @@
 App para un Proyecto Final del Curso Fullstack de Franja Morada.
 
 El mismo es una página web donde podemos registrarnos y elegir nuestros álbumes favoritos para llevar una lista de los mismos.
-En un futuro, esta aplicación podría expandirse y permitir escribir reviews de albumes, para que sean visibles por todo el mundo, ademas, también podría compartirse el perfil con tus amigos para que vean tu lista de favoritos
+En un futuro, esta aplicación podría expandirse y permitir escribir reviews de albumes  que sean visibles por todo el mundo, además, también podría compartirse el perfil con tus amigos para que vean tu lista de favoritos
 
 ## Deploy en Railway
 https://tridifull-production.up.railway.app/
