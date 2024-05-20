@@ -9,7 +9,7 @@ En un futuro, esta aplicación podría expandirse y permitir escribir reviews de
 https://tridifull-production.up.railway.app/
 
 ## Instalación Local
--Realizamos un git clone del repositorio en el directorio que desee
+-Realizamos un git clone del repositorio en el directorio que deseemos
 
 -Realizamos npm install para instalar las dependencias del proyecto
 
