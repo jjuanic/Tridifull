@@ -8,6 +8,8 @@ En un futuro, esta aplicación podría expandirse y permitir escribir reviews de
 ## Deploy en Railway
 https://tridifull-production.up.railway.app/
 
+(Debido a ciertas limitaciones por parte de Railway, al estar inactiva la sesión por mucho tiempo se cierra la conexión con la base de datos, por lo que es probable que no funcione el sistema asociado al back-end)
+
 ## Instalación Local
 -Realizamos un git clone del repositorio en el directorio que deseemos
 
